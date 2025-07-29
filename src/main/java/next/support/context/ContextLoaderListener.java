@@ -16,6 +16,7 @@ import core.jdbc.ConnectionManager;
 public class ContextLoaderListener implements ServletContextListener {
     private static final Logger logger = LoggerFactory.getLogger(ContextLoaderListener.class);
 
+    // 톰캣 서버가 시작할 때 db 초기화하도록 jwp.sql 사용
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
