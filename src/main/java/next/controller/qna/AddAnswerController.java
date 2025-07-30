@@ -1,5 +1,7 @@
 package next.controller.qna;
 
+import core.mvc.JsonView;
+import core.mvc.View;
 import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,17 +20,16 @@ public class AddAnswerController implements Controller {
     private static final Logger log = LoggerFactory.getLogger(AddAnswerController.class);
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public View execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Answer answer = new Answer(req.getParameter("writer"), req.getParameter("contents"),
                 Long.parseLong(req.getParameter("questionId")));
         log.debug("answer : {}", answer);
 
         AnswerDao answerDao = new AnswerDao();
         Answer savedAnswer = answerDao.insert(answer);
-        ObjectMapper mapper = new ObjectMapper();
-        resp.setContentType("application/json;charset=UTF-8");
-        PrintWriter out = resp.getWriter();
-        out.print(mapper.writeValueAsString(savedAnswer));
-        return null;
+        req.setAttribute("answer", savedAnswer);
+        // JsonView에서 request에 저장된 attribute들을 다 꺼내서 json으로 만들기 때문에
+        // request에다가 미리 추가해둬야한다.
+        return new JsonView();
     }
 }
