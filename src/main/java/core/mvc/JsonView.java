@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class JsonView implements View {
     @Override
-    public void render(HttpServletRequest request, HttpServletResponse response)
+    public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response)
         throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json;charset=UTF-8");
