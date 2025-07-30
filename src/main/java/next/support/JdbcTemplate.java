@@ -7,15 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class JdbcTemplate {
-    public void executeUpdate(String sql, Object... parameters) throws SQLException {
+    public void executeUpdate(String sql, PreparedStatementSetter pss) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
             pstmt = con.prepareStatement(sql);
-            for(int i = 0; i < parameters.length; i++) {
-                pstmt.setObject(i + 1, parameters[i]);
-            }
+            pss.setParameters(pstmt);
 
             pstmt.executeUpdate();
         } finally {
@@ -29,7 +27,11 @@ public class JdbcTemplate {
         }
     }
 
-    public <T> T executeQuery(String sql, PreparedStatementSetter pss, RowMapper<T> rm) throws SQLException {
+    public void executeUpdate(String sql, Object... parameters) throws SQLException {
+        executeUpdate(sql, createPreparedStatementSetter(parameters));
+    }
+
+    public <T> T executeQuery(String sql, RowMapper<T> rm, PreparedStatementSetter pss) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -55,6 +57,21 @@ public class JdbcTemplate {
                 con.close();
             }
         }
+    }
+
+    public <T> T executeQuery(String sql, RowMapper<T> rm, Object... parameters) throws SQLException {
+        return executeQuery(sql, rm, createPreparedStatementSetter(parameters));
+    }
+
+    private static PreparedStatementSetter createPreparedStatementSetter(Object... parameters) {
+        return new PreparedStatementSetter() {
+            @Override
+            public void setParameters(PreparedStatement pstmt) throws SQLException {
+                for(int i = 0; i < parameters.length; i++) {
+                    pstmt.setObject(i + 1, parameters[i]);
+                }
+            }
+        };
     }
 
 }

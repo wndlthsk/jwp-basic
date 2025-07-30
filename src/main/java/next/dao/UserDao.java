@@ -68,12 +68,6 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) throws SQLException {
-        PreparedStatementSetter pss = new PreparedStatementSetter() {
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                pstmt.setString(1, userId);
-            }
-        };
         RowMapper<User> rm = new RowMapper<User>() {
             @Override
             public User mapRow(ResultSet rs) throws SQLException {
@@ -89,6 +83,6 @@ public class UserDao {
         JdbcTemplate template = new JdbcTemplate();
 
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-        return template.executeQuery(sql, pss, rm);
+        return template.executeQuery(sql, rm, userId);
     }
 }
