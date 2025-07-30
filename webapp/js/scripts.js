@@ -23,3 +23,18 @@ function addAnswer(e) {
     success : onSuccess,
   });
 }
+function onSuccess(json, status){
+  var answerTemplate = $("#answerTemplate").html();
+  var template = answerTemplate.format(
+      json.writer,
+      new Date(json.createdDate),
+      json.contents,
+      json.answerId,
+      json.answerId
+  );
+  $(".qna-comment-slipp-articles").prepend(template);
+}
+
+function onError(xhr, status) {
+  alert("error");
+}
