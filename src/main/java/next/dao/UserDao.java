@@ -15,54 +15,24 @@ import next.support.RowMapper;
 
 public class UserDao {
     public void insert(User user) throws SQLException {
-        PreparedStatementSetter pss = new PreparedStatementSetter() {
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                pstmt.setString(1, user.getUserId());
-                pstmt.setString(2, user.getPassword());
-                pstmt.setString(3, user.getName());
-                pstmt.setString(4, user.getEmail());
-            }
-        };
-
         JdbcTemplate template = new JdbcTemplate();
 
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-        template.executeUpdate(sql, pss);
+        template.executeUpdate(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
     public void update(User user) throws SQLException {
-        PreparedStatementSetter pss = new PreparedStatementSetter() {
-
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                pstmt.setString(4, user.getUserId());
-                pstmt.setString(2, user.getPassword());
-                pstmt.setString(1, user.getName());
-                pstmt.setString(3, user.getEmail());
-            }
-        };
-
         JdbcTemplate template = new JdbcTemplate();
 
         String sql = "update users set name = ?, password = ?, email = ? where userId = ?";
-        template.executeUpdate(sql, pss);
+        template.executeUpdate(sql, user.getName(), user.getPassword(), user.getEmail(), user.getUserId());
     }
 
     public void delete(String userId) throws SQLException {
-        PreparedStatementSetter pss = new PreparedStatementSetter() {
-
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                pstmt.setString(1, userId);
-
-            }
-        };
-
         JdbcTemplate template = new JdbcTemplate();
 
         String sql = "delete users where userId = ?";
-        template.executeUpdate(sql, pss);
+        template.executeUpdate(sql, userId);
     }
 
     public List<User> findAll() throws SQLException {

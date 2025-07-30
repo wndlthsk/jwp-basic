@@ -7,13 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class JdbcTemplate {
-    public void executeUpdate(String sql, PreparedStatementSetter pss) throws SQLException {
+    public void executeUpdate(String sql, Object... parameters) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
             pstmt = con.prepareStatement(sql);
-            pss.setParameters(pstmt);
+            for(int i = 0; i < parameters.length; i++) {
+                pstmt.setObject(i + 1, parameters[i]);
+            }
 
             pstmt.executeUpdate();
         } finally {
