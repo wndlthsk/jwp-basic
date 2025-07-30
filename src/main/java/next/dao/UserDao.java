@@ -31,17 +31,12 @@ public class UserDao {
     }
 
     public List<User> findAll(){
-        RowMapper<User> rm = new RowMapper<User>() {
-            @Override
-            public User mapRow(ResultSet rs) throws SQLException {
-                return new User(
-                    rs.getString("userId"),
-                    rs.getString("password"),
-                    rs.getString("name"),
-                    rs.getString("email")
-                );
-            }
-        };
+        RowMapper<User> rm = rs -> new User(
+            rs.getString("userId"),
+            rs.getString("password"),
+            rs.getString("name"),
+            rs.getString("email")
+        );
 
         JdbcTemplate template = new JdbcTemplate();
 
@@ -50,17 +45,12 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) {
-        RowMapper<User> rm = new RowMapper<User>() {
-            @Override
-            public User mapRow(ResultSet rs) throws SQLException {
-                return new User(
-                    rs.getString("userId"),
-                    rs.getString("password"),
-                    rs.getString("name"),
-                    rs.getString("email")
-                );
-            }
-        };
+        RowMapper<User> rm = rs -> new User(
+            rs.getString("userId"),
+            rs.getString("password"),
+            rs.getString("name"),
+            rs.getString("email")
+        );
 
         JdbcTemplate template = new JdbcTemplate();
 
