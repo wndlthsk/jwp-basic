@@ -13,20 +13,20 @@ public class Question {
 
     private Date createdDate;
 
-    private int countOfComment;
+    private int countOfAnswer;
 
     public Question(String writer, String title, String contents) {
         this(0, writer, title, contents, new Date(), 0);
     }
 
     public Question(long questionId, String writer, String title, String contents, Date createdDate,
-            int countOfComment) {
+            int countOfAnswer) {
         this.questionId = questionId;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.createdDate = createdDate;
-        this.countOfComment = countOfComment;
+        this.countOfAnswer = countOfAnswer;
     }
 
     public long getQuestionId() {
@@ -53,14 +53,14 @@ public class Question {
         return this.createdDate.getTime();
     }
 
-    public int getCountOfComment() {
-        return countOfComment;
+    public int getCountOfAnswer() {
+        return countOfAnswer;
     }
 
     @Override
     public String toString() {
         return "Question [questionId=" + questionId + ", writer=" + writer + ", title=" + title + ", contents="
-                + contents + ", createdDate=" + createdDate + ", countOfComment=" + countOfComment + "]";
+                + contents + ", createdDate=" + createdDate + ", countOfAnswer=" + countOfAnswer + "]";
     }
 
     @Override
