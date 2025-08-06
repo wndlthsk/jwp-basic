@@ -84,4 +84,13 @@ public class Question {
             return false;
         return true;
     }
+
+    public boolean isSameUser(User user) {
+        return user.getName().equals(this.writer);
+    }
+
+    public void update(Question newQuestion) {
+        this.title = newQuestion.title;
+        this.contents = newQuestion.contents;
+    }
 }
