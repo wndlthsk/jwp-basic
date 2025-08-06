@@ -12,7 +12,7 @@ import next.model.Question;
 import next.model.User;
 
 public class AddQuestionController extends AbstractController {
-    private QuestionDao questionDao = new QuestionDao();
+    private QuestionDao questionDao = QuestionDao.getInstance();
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse response) throws Exception {
