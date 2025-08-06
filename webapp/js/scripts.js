@@ -27,6 +27,34 @@ function onError(xhr, status) {
   alert("error");
 }
 
+$(".qna-comment").on("click", ".form-delete", deleteAnswer);
+
+function deleteAnswer(e) {
+  e.preventDefault();
+
+  var deleteBtn = $(this);
+  // form-delete 버튼에서 가장 가까운 from을 찾아 데이터를 쿼리스트링으로 변환 ex) answerId=3&writer=hyunseo
+  var queryString = deleteBtn.closest("form").serialize();
+
+  $.ajax({
+    type : 'post',
+    url : '/api/qna/deleteAnswer',
+    data : queryString,
+    dataType : 'json',
+    error: function (xhr, status) {
+      alert("error");
+    },
+    success : function (json, status){
+      var result = json.result;
+      if (result.status) {
+        deleteBtn.closest('article').remove();
+      }
+    }
+  });
+}
+
+
+
 String.prototype.format = function() {
   var args = arguments;
   return this.replace(/{(\d+)}/g, function(match, number) {

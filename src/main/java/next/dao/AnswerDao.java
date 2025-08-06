@@ -66,8 +66,14 @@ public class AnswerDao {
     }
 
     public void delete(Long answerId) {
+        Answer answer = findById(answerId);
+        long questionId = answer.getQuestionId();
+        System.out.println("삭제 전: " + findAllByQuestionId(questionId));
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "DELETE FROM ANSWERS WHERE answerId = ?";
         jdbcTemplate.update(sql, answerId);
+        System.out.println("여기: " + answerId);
+        List<Answer> answers = findAllByQuestionId(questionId);
+        System.out.println("삭제 후: " + answers);
     }
 }
