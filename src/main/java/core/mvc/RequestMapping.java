@@ -6,7 +6,9 @@ import java.util.Map;
 import next.controller.HomeController;
 import next.controller.qna.AddAnswerController;
 import next.controller.qna.AddQuestionController;
+import next.controller.qna.ApiDeleteQuestionController;
 import next.controller.qna.DeleteAnswerController;
+import next.controller.qna.DeleteQuestionController;
 import next.controller.qna.GetQuestionListController;
 import next.controller.qna.ShowController;
 import next.controller.qna.UpdateFormQuestionController;
@@ -42,9 +44,11 @@ public class RequestMapping {
         mappings.put("/qna/updateForm", new UpdateFormQuestionController());
         mappings.put("/qna/update", new UpdateQuestionController());
         mappings.put("/qna/create", new AddQuestionController());
+        mappings.put("/qna/delete", new DeleteQuestionController());
         mappings.put("/api/qna/addAnswer", new AddAnswerController());
         mappings.put("/api/qna/deleteAnswer", new DeleteAnswerController());
         mappings.put("/api/qna/list", new GetQuestionListController());
+        mappings.put("/api/qna/deleteQuestion", new ApiDeleteQuestionController());
 
         logger.info("Initialized Request Mapping!");
     }
