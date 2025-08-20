@@ -2,7 +2,10 @@ package core.mvc;
 
 import com.google.common.collect.Lists;
 import core.nmvc.AnnotationHandlerMapping;
+import core.nmvc.ControllerHandlerAdapter;
+import core.nmvc.HandlerAdapter;
 import core.nmvc.HandlerExecution;
+import core.nmvc.HandlerExecutionHandlerAdapter;
 import core.nmvc.HandlerMapping;
 import java.io.IOException;
 
@@ -21,6 +24,7 @@ public class DispatcherServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
     private List<HandlerMapping> mappings = Lists.newArrayList();
+    private List<HandlerAdapter> handlerAdapters = Lists.newArrayList();
 
     @Override
     public void init() throws ServletException {
@@ -32,6 +36,9 @@ public class DispatcherServlet extends HttpServlet {
 
         mappings.add(lhm);
         mappings.add(ahm);
+
+        handlerAdapters.add(new ControllerHandlerAdapter());
+        handlerAdapters.add(new HandlerExecutionHandlerAdapter());
     }
 
     @Override
@@ -62,15 +69,19 @@ public class DispatcherServlet extends HttpServlet {
         return null;
     }
 
+
+
+
     private ModelAndView execute(
         Object handler,
         HttpServletRequest req,
         HttpServletResponse resp
     ) throws Exception{
-        if (handler instanceof Controller) {
-            return ((Controller)handler).execute(req, resp);
-        } else {
-            return ((HandlerExecution) handler).handle(req, resp);
+        for (HandlerAdapter handlerAdapter : handlerAdapters) {
+            if(handlerAdapter.supports(handler)) {
+                return handlerAdapter.handle(req, resp, handler);
+            }
         }
+        return null;
     }
 }
